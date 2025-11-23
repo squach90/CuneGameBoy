@@ -1,6 +1,6 @@
 # CPU
 
-This page aims to repertory all info on the CPU you need to create an ✨ GameBoy Emulator because why not ¯\\_(ツ)\_/¯
+This page aims to repertory all info on the CPU you need to create an ✨ GameBoy Emulator because why not ¯\\\_(ツ)\_/¯
 
 The CPU of the gameboy (the 8-bit 8080-like Sharp CPU, [Pandocs](https://gbdev.io/pandocs/Specifications.html)) can be split in 4 parts: **Registers, Fetch/Decode/Execute, Instructions, Interruptions**
 
