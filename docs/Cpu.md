@@ -120,7 +120,7 @@ Top adress (ex: $C1FF)
     |    Element 1      |  ← First In (FI)
     +-------------------+
     |                   |
-    |   Espace libre    |
+    |    Free space     |
     |                   |
     +-------------------+
     ↑
