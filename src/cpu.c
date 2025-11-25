@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "../includes/cpu.h"
 #include "../includes/mmu.h"
 #include "../includes/main.h"
@@ -29,10 +30,32 @@ void cpu_step(CPU *cpu, MMU *mmu) {
     switch (opcode) {
         case 0x00: // NOP
             break;
+
+        case 0x31: { // LD SP, d16
+            uint8_t low  = mmu_read(mmu, cpu->PC++);
+            uint8_t high = mmu_read(mmu, cpu->PC++);
+            cpu->SP = (high << 8) | low;
+
+            if(DEBUG_MODE >= 2) {
+                printf("LD SP, 0x%04X\n", cpu->SP);
+            }
+            break;
+        }
+
+        case 0xAF: // XOR A
+            cpu->A ^= cpu->A;
+            // Set flags
+            cpu->F = FLAG_Z; // Set Zero flag
+            if(DEBUG_MODE >= 2) {
+                printf("XOR A -> A=0x%02X, F=0x%02X\n", cpu->A, cpu->F);
+            }
+            break;
+
         default:
-            if (DEBUG_MODE == 2 || DEBUG_MODE == 3) {
+            if (DEBUG_MODE >= 2) {
                 printf("Unknown opcode: 0x%02X at PC=0x%04X\n", opcode, cpu->PC - 1);
             }
+            exit(1);
             break;
     }
 }
