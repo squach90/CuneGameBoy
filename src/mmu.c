@@ -38,6 +38,14 @@ int mmu_load_bios_file(MMU *mmu, const char *filename) {
     return 0;
 }
 
+int mmu_load_bios(MMU *mmu, const uint8_t *bios_data, size_t size) {
+    if (size > sizeof(mmu->bios)) return -1;
+    memcpy(mmu->bios, bios_data, size);
+    mmu->bios_active = 1;
+    return 0;
+}
+
+
 int mmu_load_rom(MMU *mmu, const uint8_t *data, size_t size) {
     if (!mmu || !data || size == 0) return -1;
     mmu->rom = malloc(size);

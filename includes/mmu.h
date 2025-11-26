@@ -34,6 +34,7 @@ typedef struct {
 // == Function ==
 void mmu_init(MMU *mmu);
 int mmu_load_bios_file(MMU *mmu, const char *filename);
+int mmu_load_bios(MMU *mmu, const uint8_t *bios_data, size_t size);
 int mmu_load_rom(MMU *mmu, const uint8_t *data, size_t size);
 void mmu_free_rom(MMU *mmu);
 uint8_t mmu_read(MMU *mmu, uint16_t addr);

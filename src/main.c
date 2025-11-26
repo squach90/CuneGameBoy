@@ -1,10 +1,10 @@
-// TODO: implement bios in code (array)
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "../includes/cpu.h"
 #include "../includes/mmu.h"
 #include "../includes/main.h"
+#include "../includes/bios.h"
 
 int DEBUG_MODE = 0;
 
@@ -35,12 +35,20 @@ int main(int argc, char *argv[]) {
     cpu_init(&cpu);
     mmu_init(&mmu);
 
-    // Load BIOS
-    if (mmu_load_bios_file(&mmu, "roms/Gameboy-Bios.gb") != 0) {
-        printf("Erreur: impossible de charger le BIOS\n");
+    // // Load BIOS
+    // if (mmu_load_bios_file(&mmu, "roms/Gameboy-Bios.gb") != 0) {
+    //     printf("Erreur: impossible de charger le BIOS\n");
+    //     return 1;
+    // } else if (DEBUG_MODE >= 1) {
+    //     printf("✅ BIOS chargé\n");
+    // }
+
+    // Load BIOS from array
+    if (mmu_load_bios(&mmu, biosArray, bios_size) != 0) {
+        printf("Erreur: impossible de charger le BIOS depuis l'array\n");
         return 1;
     } else if (DEBUG_MODE >= 1) {
-        printf("✅ BIOS chargé\n");
+        printf("✅ BIOS chargé depuis l'array\n");
     }
 
     // Load ROM file

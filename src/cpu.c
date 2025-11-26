@@ -6,21 +6,21 @@
 
 void cpu_init(CPU *cpu) {
     // == Flags ==
-    cpu->A = 0;
-    cpu->F = 0;
-    cpu->B = 0;
-    cpu->C = 0;
-    cpu->D = 0;
-    cpu->E = 0;
-    cpu->H = 0;
-    cpu->L = 0;
+    cpu->A = 0x01;
+    cpu->F = 0xB0;
+    cpu->B = 0x00;
+    cpu->C = 0x13;
+    cpu->D = 0x00;
+    cpu->E = 0xD8;
+    cpu->H = 0x01;
+    cpu->L = 0x4D;
 
     // == Pointers ==
     cpu->PC = 0x0000;
-    cpu->SP = 0x0000;
+    cpu->SP = 0xFFFE;
 
     // == CPU State ==
-    cpu->ime = 0;       // Interrupt Master Enable (0 or 1)
+    cpu->ime = 1;       // Interrupt Master Enable (0 or 1)
     cpu->halted = 0;    // HALT state
     cpu->stopped = 0;   // STOP state
 }
