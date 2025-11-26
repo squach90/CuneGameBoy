@@ -133,3 +133,11 @@ The SP in the GameBoy is **LIFO** *Last In First Out*, the in the example the la
 
 The GameBoy CPU has **256 normal opcodes** plus **256 CB-prefixed opcodes**: [GameBoy Opcodes Table](https://meganesu.github.io/generate-gb-opcodes/)
 The CPU will fetch the opcode who is at the PC adress, and execute this one.
+
+When you see (by example) :
+
+```c
+0xCB 0x7C 0x20
+```
+
+Here the `0xCB` means we need to switch to the CB Tables for the next instruction : `0x7C`. And after we go back to “normal” opcode

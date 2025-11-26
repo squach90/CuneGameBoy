@@ -3,3 +3,4 @@ roms/
 bin/
 obj/
 .vscode/
+log.txt

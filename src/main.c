@@ -1,6 +1,7 @@
+// TODO: implement bios in code (array)
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #include "../includes/cpu.h"
 #include "../includes/mmu.h"
 #include "../includes/main.h"
@@ -8,33 +9,77 @@
 int DEBUG_MODE = 0;
 
 int main(int argc, char *argv[]) {
-    for(int i = 1; i < argc; i++) {
-        if(strcmp(argv[i], "--debug") == 0 && i+1 < argc) {
-            DEBUG_MODE = atoi(argv[i+1]); // next argument
-            i++;
-        } else if(strcmp(argv[i], "--debug") == 0) {
-            DEBUG_MODE = 3;
+    if (argc < 2) {
+        printf("Usage: %s <rom_file> [--debug N]\n", argv[0]);
+        return 1;
+    }
+
+    const char *rom_filename = argv[1];
+
+    // Parse debug option
+    for (int i = 2; i < argc; i++) {
+        if (strcmp(argv[i], "--debug") == 0) {
+            if (i + 1 < argc) {
+                DEBUG_MODE = atoi(argv[i + 1]);
+                i++;
+            } else {
+                DEBUG_MODE = 3;
+            }
         }
     }
 
     CPU cpu;
     MMU mmu;
 
+    // Init CPU and MMU
+    cpu_init(&cpu);
     mmu_init(&mmu);
 
+    // Load BIOS
     if (mmu_load_bios_file(&mmu, "roms/Gameboy-Bios.gb") != 0) {
         printf("Erreur: impossible de charger le BIOS\n");
         return 1;
-    } else {
-        if (DEBUG_MODE == 1 || DEBUG_MODE == 3) {
-            printf("BIOS chargé avec succès\n");
-        }
+    } else if (DEBUG_MODE >= 1) {
+        printf("✅ BIOS chargé\n");
     }
 
-    cpu_init(&cpu);
+    // Load ROM file
+    FILE *f = fopen(rom_filename, "rb");
+    if (!f) {
+        printf("Erreur: impossible d'ouvrir le fichier ROM '%s'\n", rom_filename);
+        return 1;
+    }
 
+    fseek(f, 0, SEEK_END);
+    size_t rom_size = ftell(f);
+    fseek(f, 0, SEEK_SET);
+
+    uint8_t *rom_data = malloc(rom_size);
+    if (!rom_data) {
+        printf("Erreur: impossible d'allouer de la mémoire pour la ROM\n");
+        fclose(f);
+        return 1;
+    }
+
+    fread(rom_data, 1, rom_size, f);
+    fclose(f);
+
+    if (mmu_load_rom(&mmu, rom_data, rom_size) != 0) {
+        printf("Erreur: impossible de charger la ROM\n");
+        free(rom_data);
+        return 1;
+    }
+    free(rom_data);
+
+    if (DEBUG_MODE >= 1) {
+        printf("ROM '%s' chargée (%zu bytes)\n", rom_filename, rom_size);
+    }
+
+    // Main CPU loop
     while (1) {
         cpu_step(&cpu, &mmu);
+        // Le BIOS désactivera mmu->bios_active quand il aura fini
     }
 
+    return 0;
 }
