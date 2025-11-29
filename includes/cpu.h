@@ -55,6 +55,6 @@ typedef struct {
 
 // === Functions ===
 void cpu_init(CPU *cpu);
-void cpu_step(CPU *cpu, MMU *mmu);
+uint16_t cpu_step(CPU *cpu, MMU *mmu);
 
 #endif

@@ -1,23 +1,17 @@
-# Makefile pour l'émulateur NES
-
 CC = gcc
 CFLAGS = -Wall -O2 -Iinclude `sdl2-config --cflags`
 LDFLAGS = `sdl2-config --libs`
 
-# Répertoires
 SRC_DIR = src
 OBJ_DIR = obj
 BIN_DIR = bin
 
-# Fichiers
-SOURCES = $(SRC_DIR)/main.c $(SRC_DIR)/cpu.c $(SRC_DIR)/mmu.c
+SOURCES = $(SRC_DIR)/main.c $(SRC_DIR)/cpu.c $(SRC_DIR)/mmu.c $(SRC_DIR)/ppu.c
 OBJECTS = $(SOURCES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 TARGET = $(BIN_DIR)/gb
 
-# Règle par défaut
 all: directories $(TARGET)
 
-# Créer les répertoires nécessaires
 directories:
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(BIN_DIR)

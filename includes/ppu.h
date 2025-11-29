@@ -2,6 +2,7 @@
 #define PPU_H
 
 #include <stdint.h>
+#include "mmu.h"
 
 #define SCREEN_WIDTH 160
 #define SCREEN_HEIGHT 144
@@ -34,5 +35,6 @@ typedef struct {
 } PPU;
 
 // === Functions ===
+void ppu_init(PPU *ppu);
 
 #endif

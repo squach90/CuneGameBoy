@@ -21,7 +21,34 @@ void mmu_init(MMU *mmu) {
     mmu->ram_enabled = 0;
     mmu->mbc_type = 0;
     mmu->interrupt_enable = 0;
-    mmu->bios_active = 1;
+    mmu->bios_active = 0;
+    mmu->io[0x05] = 0x00;
+    mmu->io[0x06] = 0x00;
+    mmu->io[0x07] = 0x00;
+    mmu->io[0x10] = 0x80;
+    mmu->io[0x11] = 0xBF;
+    mmu->io[0x12] = 0xF3;
+    mmu->io[0x14] = 0xBF;
+    mmu->io[0x16] = 0x3F;
+    mmu->io[0x17] = 0x00;
+    mmu->io[0x19] = 0xBF;
+    mmu->io[0x1A] = 0x7F;
+    mmu->io[0x1B] = 0xFF;
+    mmu->io[0x1C] = 0x9F;
+    mmu->io[0x1E] = 0xBF;
+    mmu->io[0x20] = 0xFF;
+    mmu->io[0x21] = 0x00;
+    mmu->io[0x22] = 0x00;
+    mmu->io[0x23] = 0xBF;
+    mmu->io[0x24] = 0x77;
+    mmu->io[0x25] = 0xF3;
+    mmu->io[0x26] = 0xF1;
+    mmu->io[0x40] = 0x91;
+    mmu->io[0x47] = 0xFC;
+    mmu->io[0x48] = 0xFF;
+    mmu->io[0x49] = 0xFF;
+    mmu->io[0x4A] = 0x00;
+    mmu->io[0x4B] = 0x00;
 }
 
 int mmu_load_bios_file(MMU *mmu, const char *filename) {
@@ -175,6 +202,7 @@ void mmu_write(MMU *mmu, uint16_t addr, uint8_t val) {
         mmu->io[addr - 0xFF00] = val;
     } else if (addr == 0xFF50) {
         mmu->bios_active = 0; // Disabling BIOS
+        printf("BIOS désactivé !\n");
     } else if (addr >= 0xFF80 && addr <= 0xFFFE) {
         mmu->hram[addr - 0xFF80] = val;
     } else if (addr == 0xFFFF) {
